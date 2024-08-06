@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthsModule } from './auths/auths.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auths/constants';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auths/auth.guard';
 
 @Module({
   imports: [
@@ -26,7 +28,12 @@ import { jwtConstants } from './auths/constants';
     AuthsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
