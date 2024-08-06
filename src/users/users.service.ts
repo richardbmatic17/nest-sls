@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from 'src/schema/auth.schema';
@@ -10,8 +10,12 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = new this.userModel(createUserDto);
-    return user.save();
+    try {
+      const user = new this.userModel(createUserDto);
+      return user.save();
+    } catch (error) {
+      throw new HttpException('InvalidRequest', HttpStatus.NOT_FOUND);
+    }
   }
 
   findAll() {
