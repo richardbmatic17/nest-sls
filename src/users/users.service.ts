@@ -11,8 +11,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const user = new this.userModel(createUserDto);
-      return user.save();
+      return await this.userModel.create(createUserDto);
     } catch (error) {
       throw new HttpException('InvalidRequest', HttpStatus.NOT_FOUND);
     }
@@ -22,8 +21,22 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    try {
+      const user = await this.userModel.findById(id);
+      return user;
+    } catch (error) {
+      throw new HttpException('InvalidRequest', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async findByUsername(username: string) {
+    try {
+      const user = await this.userModel.findOne({ username });
+      return user;
+    } catch (error) {
+      throw new HttpException('InvalidRequest', HttpStatus.NOT_FOUND);
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
