@@ -1,6 +1,9 @@
 import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
+import mongoose from 'mongoose';
+mongoose.set('debug', true);
+
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   private readonly httpRequestLogger = new Logger('HttpRequest');

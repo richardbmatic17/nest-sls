@@ -4,6 +4,7 @@ import { Callback, Context, Handler } from 'aws-lambda';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
+import { ConfigModule } from '@nestjs/config';
 
 let server: Handler;
 
@@ -13,6 +14,7 @@ async function bootstrap(): Promise<Handler> {
   app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
   app.enableCors();
+  app.get(ConfigModule);
   await app.init();
 
   const expressApp = app.getHttpAdapter().getInstance();

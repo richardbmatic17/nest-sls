@@ -8,10 +8,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auths/constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auths/auth.guard';
+import { S3Service } from './services/aws/s3/s3.service';
+import { S3Module } from './services/aws/s3/s3.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,6 +30,7 @@ import { AuthGuard } from './auths/auth.guard';
     }),
     UsersModule,
     AuthsModule,
+    S3Module,
   ],
   controllers: [],
   providers: [
@@ -33,6 +38,7 @@ import { AuthGuard } from './auths/auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    S3Service,
   ],
 })
 export class AppModule implements NestModule {

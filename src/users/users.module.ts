@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schema/auth.schema';
+import { S3Module } from 'src/services/aws/s3/s3.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { User, UserSchema } from 'src/schema/auth.schema';
         schema: UserSchema,
       },
     ]),
+    S3Module,
   ],
   controllers: [UsersController],
   providers: [UsersService],
