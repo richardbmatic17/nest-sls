@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auths/auth.guard';
 import { S3Service } from './services/aws/s3/s3.service';
 import { S3Module } from './services/aws/s3/s3.module';
+import { WebsitesModule } from './websites/websites.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { S3Module } from './services/aws/s3/s3.module';
     UsersModule,
     AuthsModule,
     S3Module,
+    WebsitesModule,
   ],
   controllers: [],
   providers: [
