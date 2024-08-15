@@ -1,11 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateWebsiteDto } from './dto/create-website.dto';
 import { UpdateWebsiteDto } from './dto/update-website.dto';
+import { S3Service } from 'src/services/aws/s3/s3.service';
 
 @Injectable()
 export class WebsitesService {
-  create(createWebsiteDto: CreateWebsiteDto) {
-    return `Please visit your website url: ${createWebsiteDto.website_name}`;
+  private readonly logger = new Logger('websiteServiceLogger');
+
+  constructor(private readonly s3Service: S3Service) {}
+
+  async create(createWebsiteDto: CreateWebsiteDto) {
+    try {
+      const {
+        indexContent,
+        errorContent,
+        websiteName: bucketName,
+      } = createWebsiteDto;
+      const website = await this.s3Service.createStaticWebsite(
+        bucketName,
+        indexContent,
+        errorContent,
+      );
+
+      return `Please visit your Static Website at: ${website}`;
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {
