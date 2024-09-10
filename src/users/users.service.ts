@@ -36,6 +36,7 @@ export class UsersService {
 
   async findOne(id: number) {
     try {
+      console.log(id);
       const user = await this.userModel.findById(id);
       return user;
     } catch (error) {
